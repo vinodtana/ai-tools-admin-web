@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* React Quill styles */
+.ql-editor {
+  color: hsl(var(--foreground)) !important;
+  background: hsl(var(--background)) !important;
+}
+
+.ql-toolbar {
+  border-top: 1px solid hsl(var(--border)) !important;
+  border-left: 1px solid hsl(var(--border)) !important;
+  border-right: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--background)) !important;
+}
+
+.ql-container {
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  border-left: 1px solid hsl(var(--border)) !important;
+  border-right: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--background)) !important;
+}
+
+.ql-tooltip {
+  background: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Light theme as default - Admin Portal colors */
+    --background: 220 14% 97%; /* #F8F9FA */
+    --foreground: 215 25% 27%;
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 215 25% 27%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
+
+    --primary: 211 100% 50%; /* #007BFF */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 217 10% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 217 10% 95%;
+    --accent-foreground: 215 25% 27%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 215 14% 89%;
+    --input: 215 14% 89%;
+    --ring: 211 100% 50%; /* #007BFF ring */
+
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --info: 211 100% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(211 100% 50%), hsl(211 100% 45%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(217 10% 95%));
+    
+    --shadow-elegant: 0 4px 25px -5px hsl(211 100% 50% / 0.25);
+    --shadow-card: 0 2px 10px -2px hsl(215 25% 27% / 0.1);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 25% 27%;
+    --sidebar-primary: 211 100% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 217 10% 95%;
+    --sidebar-accent-foreground: 215 25% 27%;
+    --sidebar-border: 215 14% 89%;
+    --sidebar-ring: 211 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/80 transition-colors;
+  }
+
+  a:visited {
+    @apply text-primary;
+  }
+}
+
+.menu-item-sec-value-row .bg-primary{
+  color: #fff !important;
+  background-color: hsl(var(--primary)) !important;
+}
+.table-img{
+  width: 100px;
+}
