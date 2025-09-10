@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import { createTool, updateTool, setCurrentTool, fetchTools , fetchToolById} from '@/store/slices/toolsSlice';
+import { createTool, updateTool, setCurrentTool, fetchTools , fetchToolById, getImageUrlFromPNGImage} from '@/store/slices/toolsSlice';
 import { useToast } from '@/hooks/use-toast';
 import { AITool } from '@/store/slices/toolsSlice';
 import { Save, ArrowLeft } from 'lucide-react';
@@ -17,6 +17,8 @@ import MultiSelectCategories from '@/components/common/MultiSelectCategories';
 import ImageUpload from '@/components/common/ImageUpload';
 import { DatePicker } from '@/components/common/DatePicker';
 import { fetchCategories } from '@/store/slices/categoriesSlice';
+import mql from "@microlink/mql";
+
 interface ToolFormProps {
   mode: 'create' | 'edit';
 }
@@ -41,6 +43,9 @@ const ToolForm = ({ mode }: ToolFormProps) => {
   const [toolPros, setToolPros] = useState<string[]>(['']);
   const [toolCons, setToolCons] = useState<string[]>(['']);
   const [keyAchievements, setKeyAchievements] = useState<string[]>(['']);
+    // const [url, setUrl] = useState("https://easy-peasy.ai");
+    const [dynamic_screenshot, setDynamicScreenshot] = useState<string | null>(null);
+    const [dynamic_logo, setDynamicLogo] = useState<string | null>(null);
   
   const [bannerImage, setBannerImage] = useState('');
   const [images, setImages] = useState<string[]>([]);
@@ -49,6 +54,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
   const [type, setType] = useState('tools');
   const [status, setStatus] = useState('');
   const [launchDate, setLaunchDate] = useState<Date | undefined>();
+  const [isLoader, setIsLoader] = useState(false);
 
   const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm<AITool>({
     defaultValues: {
@@ -174,12 +180,54 @@ console.log("type", type);
       )
     );
   };
+  console.log("currentTool.toolUrl", currentTool?.toolUrl);
   const onSubmit = async (data: AITool) => {
     try {
+      setIsLoader(true);
+      let d_description = "";
+      let d_logo = "";
+      let d_bannerImage = "";
+      let images_list = [];
+      console.log("currentTool.toolUrl", currentTool?.toolUrl);
+      console.log("data?.toolUrl", data?.toolUrl);
+      if(data?.toolUrl && currentTool?.toolUrl!= data?.toolUrl){
+        const  response_image = await mql(data?.toolUrl, {
+          screenshot: true,
+          meta: true, // includes logo
+        });
+        const imgage_data = response_image?.data;
+        console.log("imgage_dataimgage_data", imgage_data);
+        const resp1 = await dispatch(getImageUrlFromPNGImage(imgage_data?.screenshot.url));
+        console.log("resp1", resp1);
+        const img_url = resp1?.payload.url;
+        const resp2 = await dispatch(getImageUrlFromPNGImage(imgage_data?.logo.url));
+        console.log("resp2", resp2);
+        const logo_url = resp2?.payload.url;
+
+        d_description = imgage_data?.description;
+        d_logo = logo_url;
+        d_bannerImage=img_url;
+        images_list= [img_url];
+        setLogo(logo_url);
+        setBannerImage(img_url);
+        setImages([img_url]);
+
+        // console.log("cleanedData", cleanedData);
+        // return false;
+        // if (data.screenshot?.url) setScreenshot(data.screenshot.url);
+        // if (data.logo?.url) setLogo(data.logo.url);
+      }
+console.log("d_bannerImage", d_bannerImage);
+      // const [bannerImage, setBannerImage] = useState('');
+      // const [images, setImages] = useState<string[]>([]);
+      // const [logo, setLogo] = useState('');
+    console.log("images", images);
+    console.log("bannerImage", bannerImage);
+    console.log("datadata", data);
       const toolData = {
         ...data,
         overview,
-        description,
+        description: d_description ? d_description: description || d_description,
         howToUse,
         promptTemplate,
         categories,
@@ -188,9 +236,9 @@ console.log("type", type);
         toolPros,
         toolCons,
         keyAchievements,
-        bannerImage,
-        images,
-        logo,
+        bannerImage:d_bannerImage ? d_bannerImage:  bannerImage || d_bannerImage,
+        images: images_list ? images_list: images || images_list,
+        logo : d_logo ? d_logo: logo || d_logo,
         planType,
         type,
         status,
@@ -198,12 +246,16 @@ console.log("type", type);
       };
       console.log("toolDatatoolData", toolData, JSON.stringify(toolData))
       const cleanedData = removeEmptyValues(toolData) as any;
+
+      
+    
       if (mode === 'create') {
         
 
         console.log("toolDatatoolData", toolData, JSON.stringify(cleanedData))
         await dispatch(createTool(cleanedData)).unwrap();
         dispatch(fetchTools({ page: 1, limit: 100 }));
+       
         toast({
           title: 'Success',
           description: 'Tool created successfully',
@@ -215,9 +267,12 @@ console.log("type", type);
           title: 'Success',
           description: 'Tool updated successfully',
         });
+        
       }
       navigate('/tools');
+      setIsLoader(false);
     } catch (error) {
+      setIsLoader(false);
       toast({
         title: 'Error',
         description: `Failed to ${mode} tool`,

@@ -72,9 +72,15 @@ export const createTool = createAsyncThunk('tools/createTool', async (tool: AITo
 export const fetchToolById = createAsyncThunk('tools/fetchToolById', async (id: any) => {
   return await get(`${SERVER_IP}/contents/${id}`);
 });
-export const getPresignedURL = createAsyncThunk('tools/getPresignedURL', async (tool: AITool) => {
+export const getPresignedURL = createAsyncThunk('tools/getPresignedURL', async (tool: any) => {
   return await post(`${SERVER_IP}/contents/get-presigned-url`, tool);
 });
+
+export const getImageUrlFromPNGImage = createAsyncThunk('tools/getImageUrlFromPNGImage', async (id: any) => {
+  return await get(`${SERVER_IP}/contents/get-image-url-from-png-image?imageUrl=${id}`);
+});
+
+
 
 
 export const updateTool = createAsyncThunk('tools/updateTool', async ({ id, tool }: { id: string; tool: AITool }) => {

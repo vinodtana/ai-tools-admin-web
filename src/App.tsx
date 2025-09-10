@@ -33,6 +33,7 @@ import ManageUsersList from './pages/manage-users/ManageUsersList';
 import ManageUserForm from './pages/manage-users/ManageUserForm';
 import ManageUserView from './pages/manage-users/ManageUserView';
 import NotFound from "./pages/NotFound";
+import Testing from "./pages/Testing";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="tools" element={<ToolsList />} />
               <Route path="contents" element={<ToolsList />} />
+              <Route path="testing" element={<Testing />} />
               
               <Route path="tools/create" element={<ToolForm mode="create" />} />
               <Route path="tools/edit/:id" element={<ToolForm mode="edit" />} />
