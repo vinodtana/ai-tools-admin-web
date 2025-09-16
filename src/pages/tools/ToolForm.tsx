@@ -37,7 +37,7 @@ import ImageUpload from "@/components/common/ImageUpload";
 import { DatePicker } from "@/components/common/DatePicker";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
 import mql from "@microlink/mql";
-
+// import {Loader} from "@/components/common/"
 interface ToolFormProps {
   mode: "create" | "edit";
 }
@@ -77,7 +77,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
   const [logo, setLogo] = useState("");
   const [planType, setPlanType] = useState("");
   const [type, setType] = useState("tools");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Published");
   const [launchDate, setLaunchDate] = useState<Date | undefined>();
   const [isLoader, setIsLoader] = useState(false);
 
