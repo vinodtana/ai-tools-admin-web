@@ -238,15 +238,15 @@ const ToolForm = ({ mode }: ToolFormProps) => {
         const imgage_data = response_image?.data;
         console.log("imgage_dataimgage_data", imgage_data);
         const resp1 = await dispatch(
-          getImageUrlFromPNGImage(imgage_data?.screenshot.url)
+          getImageUrlFromPNGImage(imgage_data?.screenshot?.url)
         );
         console.log("resp1", resp1);
-        const img_url = resp1?.payload.url;
+        const img_url = resp1?.payload?.url;
         const resp2 = await dispatch(
-          getImageUrlFromPNGImage(imgage_data?.logo.url)
+          getImageUrlFromPNGImage(imgage_data?.logo?.url)
         );
         console.log("resp2", resp2);
-        const logo_url = resp2?.payload.url;
+        const logo_url = resp2?.payload?.url;
 
         d_description = imgage_data?.description;
         d_logo = logo_url;
@@ -315,6 +315,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
       navigate("/tools");
       setIsLoader(false);
     } catch (error) {
+      console.log("errorerror", error);
       setIsLoader(false);
       toast({
         title: "Error",
