@@ -63,7 +63,14 @@ const initialState: ToolsState = {
 };
 
 export const fetchTools = createAsyncThunk('tools/fetchTools', async (params: any) => {
-  return await get(`${SERVER_IP}/contents`);
+  const queryParams = new URLSearchParams({
+    page: params.page,
+    limit: params.limit,
+    search: params.search || '',
+    type: params.type || '',
+    display_order: params.display_order || ''
+  }).toString();
+  return await get(`${SERVER_IP}/contents?${queryParams}`);
 });
 
 export const createTool = createAsyncThunk('tools/createTool', async (tool: AITool) => {
@@ -79,6 +86,9 @@ export const getPresignedURL = createAsyncThunk('tools/getPresignedURL', async (
 
 export const getImageUrlFromPNGImage = createAsyncThunk('tools/getImageUrlFromPNGImage', async (id: any) => {
   return await get(`${SERVER_IP}/contents/get-image-url-from-png-image?imageUrl=${id}`);
+});
+export const updateToolDisplayOrder = createAsyncThunk('tools/updateToolDisplayOrder', async (body: any) => {
+  return await post(`${SERVER_IP}/contents/updatedisplayOrder`, body);
 });
 
 
