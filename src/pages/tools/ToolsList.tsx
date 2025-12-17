@@ -26,7 +26,7 @@ const ToolsList = () => {
     { key: 'logo', label: 'Logo' },
     { key: 'tagline', label: 'Tagline' },
     { key: 'companyName', label: 'Company' },
-    { key: 'categories', label: 'Categories' },
+    { key: 'categoryNamesList', label: 'Categories' },
     { key: 'rating', label: 'Rating' },
     { key: 'usersCount', label: 'Users' },
     { key: 'status', label: 'Status Value' },

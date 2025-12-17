@@ -54,6 +54,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
     (state) => state.categories
   );
   const [categories, setCategories] = useState<string[]>([]);
+  const [categoryNamesList, setCategoryNamesList] = useState<string[]>([]);
   const [allcategories, setAllcategories] = useState([] as any);
 
   console.log("allcategories", allcategories);
@@ -110,6 +111,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
       howToUse: "",
       promptTemplate: "",
       categories: [],
+      categoryNamesList: [],
       features: [],
       useCases: [],
       toolPros: [],
@@ -134,7 +136,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
   useEffect(() => {
     const newList = [] as any;
     categoriesList.map((cat: any) => {
-      newList.push({ value: cat.id, label: cat.name });
+      newList.push({ value: cat?.name.toLowerCase(), label: cat.name });
     });
     setAllcategories(newList);
 
@@ -186,6 +188,7 @@ const ToolForm = ({ mode }: ToolFormProps) => {
       setHowToUse(currentTool.howToUse || "");
       setPromptTemplate(currentTool.promptTemplate || "");
       setCategories(currentTool.categories || []);
+      setCategoryNamesList(currentTool.categoryNamesList || []);
       setFeatures(currentTool.features?.length ? currentTool.features : [""]);
       setUseCases(currentTool.useCases?.length ? currentTool.useCases : [""]);
       setToolPros(currentTool.toolPros?.length ? currentTool.toolPros : [""]);
@@ -276,7 +279,8 @@ const ToolForm = ({ mode }: ToolFormProps) => {
           : description || d_description,
         howToUse,
         promptTemplate,
-        categories,
+        // categories,
+        categoryNamesList,
         features,
         useCases,
         toolPros,
@@ -430,8 +434,8 @@ const ToolForm = ({ mode }: ToolFormProps) => {
               <div className="space-y-2 md:col-span-2">
                 <MultiSelectCategories
                   label="Categories"
-                  value={categories}
-                  onChange={setCategories}
+                  value={categoryNamesList}
+                  onChange={setCategoryNamesList}
                   placeholder="Select categories..."
                   required={true}
                   categoriesList={allcategories}

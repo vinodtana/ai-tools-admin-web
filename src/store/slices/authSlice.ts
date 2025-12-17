@@ -49,6 +49,11 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
   return null;
 });
 
+export const checkSocialUserAPI = createAsyncThunk(
+  "auth/checkSocialUserAPI",
+  async (body: any) => await post(`${SERVER_IP}/api/v1/auth/google`, body)
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,

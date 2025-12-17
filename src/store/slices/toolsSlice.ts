@@ -9,6 +9,7 @@ export interface AITool {
   tagline: string;
   logo?: string;
   categories: string[];
+  categoryNamesList: string[];
   Type?: string;
   planType?: string;
   type?: string;
